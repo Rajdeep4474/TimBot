@@ -4,21 +4,63 @@ namespace OrderBot
 {
     public class Order : ISQLModel
     {
+        private string _cafe_location = String.Empty;
+        private string _item = String.Empty;
         private string _size = String.Empty;
-        private string _phone = String.Empty;
+        private string _wiped_cream = String.Empty;
+        private string _delivery = String.Empty;
+        private string _location = String.Empty;
+        private string _payment = String.Empty;
+        private string _code = String.Empty;
 
-        public string Phone{
-            get => _phone;
-            set => _phone = value;
+        public string CafeLocation
+        {
+            get => _cafe_location;
+            set => _cafe_location = value;
         }
 
-        public string Size{
+        public string Item
+        {
+            get => _item;
+            set => _item = value;
+        }
+
+        public string Size
+        {
             get => _size;
             set => _size = value;
         }
 
-        public void Save(){
-           using (var connection = new SqliteConnection(DB.GetConnectionString()))
+        public string WipedCream
+        {
+            get => _wiped_cream;
+            set => _wiped_cream = value;
+        }
+        public string Delivery
+        {
+            get => _delivery;
+            set => _delivery = value;
+        }
+        public string Location
+        {
+            get => _location;
+            set => _location = value;
+        }
+        public string Payment
+        {
+            get => _payment;
+            set => _payment = value;
+        }
+        public string Code
+        {
+            get => _code;
+            set => _code = value;
+        }
+
+
+        public void Save()
+        {
+            using (var connection = new SqliteConnection(DB.GetConnectionString()))
             {
                 connection.Open();
 
@@ -29,18 +71,19 @@ namespace OrderBot
         SET size = $size
         WHERE phone = $phone
     ";
-                commandUpdate.Parameters.AddWithValue("$size", Size);
-                commandUpdate.Parameters.AddWithValue("$phone", Phone);
+                //commandUpdate.Parameters.AddWithValue("$size", Size);
+                //commandUpdate.Parameters.AddWithValue("$phone", Phone);
                 int nRows = commandUpdate.ExecuteNonQuery();
-                if(nRows == 0){
+                if (nRows == 0)
+                {
                     var commandInsert = connection.CreateCommand();
                     commandInsert.CommandText =
                     @"
             INSERT INTO orders(size, phone)
             VALUES($size, $phone)
         ";
-                    commandInsert.Parameters.AddWithValue("$size", Size);
-                    commandInsert.Parameters.AddWithValue("$phone", Phone);
+                    //commandInsert.Parameters.AddWithValue("$size", Size);
+                    //commandInsert.Parameters.AddWithValue("$phone", Phone);
                     int nRowsInserted = commandInsert.ExecuteNonQuery();
 
                 }
@@ -49,3 +92,7 @@ namespace OrderBot
         }
     }
 }
+
+
+
+
