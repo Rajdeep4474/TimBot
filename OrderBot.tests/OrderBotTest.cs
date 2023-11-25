@@ -23,17 +23,13 @@ namespace OrderBot.tests
 
             }
         }
-        [Fact]
-        public void Test1()
-        {
 
-        }
         [Fact]
         public void TestWelcome()
         {
             Session oSession = new Session("12345");
             String sInput = oSession.OnMessage("hello")[0];
-            Assert.True(sInput.Contains("Welcome"));
+            Assert.Contains("Welcome To TimBot! Choose", sInput);
         }
         [Fact]
         public void TestWelcomPerformance()
@@ -46,40 +42,99 @@ namespace OrderBot.tests
             System.Diagnostics.Debug.WriteLine("Elapsed Time: " + nElapsed);
             Assert.True(nElapsed < 10000);
         }
+
+
         [Fact]
-        public void TestShawarama()
+        public void TestWipedCreamStatus()
         {
             Session oSession = new Session("12345");
-            String sInput = oSession.OnMessage("hello")[0];
-            Assert.True(sInput.ToLower().Contains("shawarama"));
+            String welcomeMessage = oSession.OnMessage("hello")[0];
+            String restLoca = oSession.OnMessage("1")[0]; // Wateloo
+            String item = oSession.OnMessage("2")[0]; // Iced Latte
+            String size = oSession.OnMessage("2")[0]; // Medium
+
+            Assert.Contains("(Yes/No)", size);
         }
+
+
         [Fact]
-        public void TestSize()
+        public void TestOrderConfirmation()
         {
             Session oSession = new Session("12345");
-            String sInput = oSession.OnMessage("hello")[1];
-            Assert.True(sInput.ToLower().Contains("size"));
+            String welcomeMessage = oSession.OnMessage("hello")[0];
+            String restLoca = oSession.OnMessage("1")[0]; // Wateloo
+            String item = oSession.OnMessage("2")[0]; // Iced Latte
+            String size = oSession.OnMessage("2")[0]; // Medium
+            String wipedCream = oSession.OnMessage("yes")[0]; // Yes
+            String pickup = oSession.OnMessage("1")[0]; // pick up
+            String confirmation = oSession.OnMessage("Waterloo")[0]; // Waterloo
+
+            Assert.Contains("Iced Cap", confirmation);
+            Assert.Contains("Large", confirmation);
         }
+
         [Fact]
-        public void TestLarge()
+        public void TestOrderConfirmationPerfomance()
+        {
+            DateTime oStart = DateTime.Now;
+            Session oSession = new Session("12345");
+            String welcomeMessage = oSession.OnMessage("hello")[0];
+            String restLoca = oSession.OnMessage("1")[0]; // Wateloo
+            String item = oSession.OnMessage("2")[0]; // Iced Latte
+            String size = oSession.OnMessage("2")[0]; // Medium
+            String wipedCream = oSession.OnMessage("yes")[0]; // Yes
+            String pickup = oSession.OnMessage("1")[0]; // pick up
+            String confirmation = oSession.OnMessage("Waterloo")[0]; // Waterloo
+
+            DateTime oFinished = DateTime.Now;
+            long nElapsed = (oFinished - oStart).Ticks;
+            System.Diagnostics.Debug.WriteLine("Elapsed Time: " + nElapsed);
+            Assert.True(nElapsed < 20000);
+        }
+
+
+        [Fact]
+        public void TestFullFlow()
         {
             Session oSession = new Session("12345");
-            oSession.OnMessage("hello");
-            String sInput = oSession.OnMessage("large")[0];
-            Assert.True(sInput.ToLower().Contains("protein"));
-            Assert.True(sInput.ToLower().Contains("large"));
+            String welcomeMessage = oSession.OnMessage("hello")[0];
+            String restLoca = oSession.OnMessage("1")[0]; // Wateloo
+            String item = oSession.OnMessage("2")[0]; // Iced Latte
+            String size = oSession.OnMessage("2")[0]; // Medium
+            String wipedCream = oSession.OnMessage("yes")[0]; // Yes
+            String pickup = oSession.OnMessage("1")[0]; // pick up
+            String confirmation = oSession.OnMessage("Waterloo")[0]; // Waterloo
+            String paymenttype = oSession.OnMessage("COD")[0]; // COD
+            String finalMessage = oSession.OnMessage("1234")[0]; // COD
+
+            Assert.Contains("Thanks For ordering", finalMessage);
         }
+
+
+
         [Fact]
-        public void TestChicken()
+        public void TestFullFlowPerfomance()
         {
-            string sPath = DB.GetConnectionString();
+            DateTime oStart = DateTime.Now;
             Session oSession = new Session("12345");
-            oSession.OnMessage("hello");
-            oSession.OnMessage("large");
-            String sInput = oSession.OnMessage("chicken")[0];
-            Assert.True(sInput.ToLower().Contains("toppings"));
-            Assert.True(sInput.ToLower().Contains("large"));
-            Assert.True(sInput.ToLower().Contains("chicken"));
+            String welcomeMessage = oSession.OnMessage("hello")[0];
+            String restLoca = oSession.OnMessage("1")[0]; // Wateloo
+            String item = oSession.OnMessage("2")[0]; // Iced Latte
+            String size = oSession.OnMessage("2")[0]; // Medium
+            String wipedCream = oSession.OnMessage("yes")[0]; // Yes
+            String pickup = oSession.OnMessage("1")[0]; // pick up
+            String confirmation = oSession.OnMessage("Waterloo")[0]; // Waterloo
+            String paymenttype = oSession.OnMessage("COD")[0]; // COD
+            String finalMessage = oSession.OnMessage("1234")[0]; // COD
+
+            //Assert.Contains("Thanks For ordering", finalMessage);
+
+            DateTime oFinished = DateTime.Now;
+            long nElapsed = (oFinished - oStart).Ticks;
+            System.Diagnostics.Debug.WriteLine("Elapsed Time: " + nElapsed);
+            Assert.True(nElapsed < 10000);
         }
+
     }
 }
+
